@@ -1,3 +1,5 @@
 include ':app', ':code1_velocitytracker_scroller'
 rootProject.name='AndroidViews'
 include ':code2_remoteview'
+include ':code3_animation'
+include ':code4_wechat_floating_window'
