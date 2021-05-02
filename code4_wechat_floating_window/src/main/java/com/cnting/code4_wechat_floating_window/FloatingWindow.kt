@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.PixelFormat
 import android.util.AttributeSet
 import android.view.*
+import android.widget.ImageView
+import android.widget.Toast
 
 /**
  * Created by cnting on 2020/4/7
@@ -11,7 +13,7 @@ import android.view.*
  */
 data class Article(val imgId: Int, val title: String)
 
-class FloatingWindow(context: Context) {
+class FloatingWindow(val context: Context) {
     private val articles = mutableListOf<Article>()
 
     private val floatingView = FloatingView(context)
@@ -80,7 +82,18 @@ class FloatingWindow(context: Context) {
     }
 
     fun addArticle(article: Article) {
+        if (getArticleCount() >= 5) {
+            Toast.makeText(context, "不能再加啦", Toast.LENGTH_SHORT).show()
+            return
+        }
         articles.add(article)
+        val imageView = ImageView(context)
+        imageView.setImageResource(article.imgId)
+        floatingView.addView(imageView)
+    }
+
+    fun getArticleCount(): Int {
+        return articles.size
     }
 
 }
@@ -130,7 +143,10 @@ class FloatingView : ViewGroup {
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
-//        getChildAt(0).layout(l, t, r, b)
+        for (i in 0 until childCount) {
+            getChildAt(i).layout(l + i * 10, t, r, b)
+        }
+
     }
 
     override fun performClick(): Boolean {
